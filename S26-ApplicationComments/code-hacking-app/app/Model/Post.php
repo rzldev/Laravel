@@ -20,7 +20,7 @@ class Post extends Model
         return $this->belongsTo('App\Model\Category');
     }
 
-    public function commnets() {
+    public function comments() {
         return $this->hasMany('App\Model\Comment');
     }
 }

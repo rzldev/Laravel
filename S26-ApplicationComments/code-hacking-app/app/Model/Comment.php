@@ -11,7 +11,8 @@ class Comment extends Model
         'author',
         'email',
         'body',
-        'is_active'
+        'is_active',
+        'photo_id'
     ];
 
     public function post() {
@@ -20,5 +21,9 @@ class Comment extends Model
 
     public function replies() {
         return $this->hasMany('App\Model\CommentReply');
+    }
+
+    public function photo() {
+        return $this->belongsTo('App\Model\Photo');
     }
 }

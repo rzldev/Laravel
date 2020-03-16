@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Model\Comment;
+use App\Model\CommentReply;
 
 class CommentReplyController extends Controller
 {
@@ -13,7 +16,9 @@ class CommentReplyController extends Controller
      */
     public function index()
     {
-        return view('admin.comments.replies.index');
+        $replies = CommentReply::all();
+
+        return view('admin.comments.replies.index', compact('replies'));
     }
 
     /**
@@ -34,7 +39,22 @@ class CommentReplyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = Auth::user();
+
+        $data = [
+            'comment_id'=>$request->comment_id,
+            'body'=>$request->body,
+            'author'=>$user->name,
+            'email'=>$user->email,
+            'photo_id'=>$user->photo->id,
+            'is_active'=>1
+        ];
+
+        // return $data;
+
+        $comment = CommentReply::create($data);
+
+        return redirect()->back();
     }
 
     /**
@@ -68,7 +88,11 @@ class CommentReplyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $reply = CommentReply::findOrFail($id);
+
+        $reply->update($request->all());
+
+        return redirect()->back();
     }
 
     /**
